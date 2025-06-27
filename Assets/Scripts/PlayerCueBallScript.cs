@@ -14,8 +14,8 @@ public class PlayerCueBallScript : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
-        Vector2 attackDir = mousePos - rb.position;
-        rb.linearVelocity = attackDir.normalized * attackSpeed;
+        Vector2 attackDir = rb.position - mousePos;
+        rb.linearVelocity = attackDir * attackSpeed;
     }
 
     public void OnPoint(InputValue value)
