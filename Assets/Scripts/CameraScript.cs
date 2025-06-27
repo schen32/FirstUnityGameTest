@@ -2,13 +2,11 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
-    GameObject player;
     Transform playerTransform;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerTransform = player.transform;
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame

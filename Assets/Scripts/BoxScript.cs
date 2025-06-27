@@ -8,6 +8,8 @@ public class BoxScript : MonoBehaviour
     public float moveSpeed;
     public float jumpHeight;
     public float rotationSpeed;
+    public float gravityScale;
+    public float fallingGravityScale;
     Vector2 moveDir;
     bool canJump;
     SpriteRenderer m_spriteRenderer;
@@ -18,11 +20,13 @@ public class BoxScript : MonoBehaviour
         moveSpeed = 500.0f;
         jumpHeight = 2000.0f;
         rotationSpeed = 10.0f;
+        gravityScale = 10.0f;
+        fallingGravityScale = 20.0f;
         moveDir = Vector2.zero;
         canJump = false;
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_rigidbody = GetComponent<Rigidbody2D>();
-        m_rigidbody.gravityScale = 10.0f;
+        m_rigidbody.gravityScale = gravityScale;
     }
 
     // Update is called once per frame
@@ -38,15 +42,21 @@ public class BoxScript : MonoBehaviour
             m_spriteRenderer.color = Color.red;
             canJump = false;
         }
+
+        if (m_rigidbody.linearVelocityY >= 0)
+        {
+            m_rigidbody.gravityScale = gravityScale;
+        }
         else
         {
-            m_spriteRenderer.color = Color.white;
+            m_rigidbody.gravityScale = fallingGravityScale;
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         canJump = true;
+        m_spriteRenderer.color = Color.white;
     }
 
     public void OnMove(InputValue value)
