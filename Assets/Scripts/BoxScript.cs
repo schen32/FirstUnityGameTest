@@ -1,30 +1,52 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class BoxScript : MonoBehaviour
 {
-    public float moveSpeed = 5.0f;
-    public Vector2 moveDir = new Vector2(0, 0);
-    public SpriteRenderer spriteRenderer;
+    public float moveSpeed;
+    public float jumpHeight;
+    public float rotationSpeed;
+    Vector2 moveDir;
+    bool canJump;
+    SpriteRenderer m_spriteRenderer;
+    Rigidbody2D m_rigidbody;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       spriteRenderer = GetComponent<SpriteRenderer>();
+        moveSpeed = 500.0f;
+        jumpHeight = 2000.0f;
+        rotationSpeed = 10.0f;
+        moveDir = Vector2.zero;
+        canJump = false;
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
+        m_rigidbody = GetComponent<Rigidbody2D>();
+        m_rigidbody.gravityScale = 10.0f;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        Vector3 moveVelocity = new Vector3(moveDir.x, moveDir.y, 0) * moveSpeed * Time.deltaTime;
-        if (moveVelocity.magnitude > 0)
+        float moveVelocityX = moveDir.x * moveSpeed * Time.deltaTime;
+        float moveVelocityY = moveDir.y * jumpHeight * Time.deltaTime;
+        m_rigidbody.linearVelocityX = moveVelocityX;
+        m_rigidbody.angularVelocity = moveVelocityX * -rotationSpeed;
+        if (moveVelocityY > 0 && canJump)
         {
-            transform.position += moveVelocity;
-            spriteRenderer.color = Color.red;
+            m_rigidbody.linearVelocityY = moveVelocityY;
+            m_spriteRenderer.color = Color.red;
+            canJump = false;
         }
         else
         {
-            spriteRenderer.color = Color.white;
+            m_spriteRenderer.color = Color.white;
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        canJump = true;
     }
 
     public void OnMove(InputValue value)
