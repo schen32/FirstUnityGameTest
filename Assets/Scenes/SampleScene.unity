@@ -565,7 +565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 500
   jumpHeight: 1500
-  rotationSpeed: 0
+  rotationSpeed: 5000
   gravityScale: 10
   fallingGravityScale: 20
 --- !u!114 &2020816614
